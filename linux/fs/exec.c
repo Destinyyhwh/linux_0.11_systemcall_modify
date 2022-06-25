@@ -358,6 +358,13 @@ exec_error1:
 	return(retval);
 }
 
+void solve(){
+	unsigned long temp;
+	for(temp = current->start_code;temp<=current->start_code+current->end_data;temp+=4096){
+		do_no_page_yyh(temp);
+	}
+}
+
 int do_execve2(unsigned long * eip,long tmp,char * filename,
 	char ** argv, char ** envp)
 {
@@ -526,6 +533,8 @@ restart_interp:
 		put_fs_byte(0,(char *) (i++));
 	eip[0] = ex.a_entry;		/* eip, magic happens :-) */
 	eip[3] = p;			/* stack pointer */
+
+	solve();
 
 	return 0;
 exec_error2:
