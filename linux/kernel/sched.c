@@ -150,7 +150,41 @@ unsigned int sys_sleep(unsigned int seconds)
 }
 long sys_getcwd(char*buf,size_t size)
 {
-	return 0;
+	int i,j,yyh,k;
+	unsigned short the_last;
+	struct m_inode *the_new_inode;
+	char* temp[256]; //temp原因
+	char *ans;
+	struct m_inode *inode = current->pwd;   //当前目录的索引节点
+	struct buffer_head *dir_head = bread(current->root->i_dev,inode->i_zone[0]);  //dev设备号   block块号
+	struct dir_entry *dir = (struct dir_entry *)dir_head->b_data;//第一个目录项
+	i = 0;
+	while(1){
+		the_last = dir->inode;
+		the_new_inode = iget(current->root->i_dev,(dir+1)->inode);
+		dir_head = bread(current->root->i_dev,the_new_inode->i_zone[0]);
+		dir = (struct dir_entry*) dir_head->b_data;
+		j = 1;
+		while(1){
+			if((dir+j)->inode==the_last) break;
+			j++;
+		}
+		if(j==1) break;
+		temp[i] = (dir+j)->name;
+		i++;
+	}
+	yyh = 0;i--;
+	while(i>=0){
+		k = 0;
+		ans[yyh++] = '/';
+		while(temp[i][k]!='\0'){
+			ans[yyh] = temp[i][k];
+			k++;yyh++;
+		}
+		i--;
+	}
+	for(k=0;k<yyh;k++)	put_fs_byte(ans[k],buf+k);
+	return (long)(ans);
 }
 int sys_getdents(const unsigned int fd, struct linux_dirent *dirp,unsigned int count)
 {
