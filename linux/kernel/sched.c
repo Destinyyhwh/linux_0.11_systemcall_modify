@@ -141,6 +141,23 @@ void schedule(void)
 	switch_to(next);
 }
 
+int sys_execve2(const char*path, char*argv[], char*envp[])
+{
+	return 0;
+}
+unsigned int sys_sleep(unsigned int seconds)
+{
+	return 0;
+}
+long sys_getcwd(char*buf,size_t size)
+{
+	return 0;
+}
+int sys_getdents(const unsigned int fd, struct linux_dirent *dirp,unsigned int count)
+{
+	return 0;
+}
+
 int sys_pause(void)
 {
 	current->state = TASK_INTERRUPTIBLE;
