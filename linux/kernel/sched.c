@@ -186,6 +186,12 @@ long sys_getcwd(char*buf,size_t size)
 	for(k=0;k<yyh;k++)	put_fs_byte(ans[k],buf+k);
 	return (long)(ans);
 }
+struct linux_dirent{
+	long d_ino; 				//索引节点号（4字节）
+	off_t d_off;				//在目录文件中的偏移（4字节）
+	unsigned short d_reclen;	//文件名长（2字节）
+	char d_name[14];			//文件名（14字节）
+};
 int sys_getdents(const unsigned int fd, struct linux_dirent *dirp,unsigned int count)
 {
 	int i,j,k;
