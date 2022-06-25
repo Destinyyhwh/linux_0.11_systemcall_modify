@@ -188,7 +188,28 @@ long sys_getcwd(char*buf,size_t size)
 }
 int sys_getdents(const unsigned int fd, struct linux_dirent *dirp,unsigned int count)
 {
-	return 0;
+	int i,j,k;
+	struct linux_dirent temp;
+	int yyh=0;
+	struct m_inode *inode = current->filp[fd]->f_inode;  //索引节点
+	struct buffer_head *dir_head = bread(inode->i_dev,inode->i_zone[0]);  //dev设备号   block块号
+	struct dir_entry *dir = (struct dir_entry *)dir_head->b_data;//第一个目录项
+	
+	for(i =0;i<1024;i++){
+		if(dir->inode==0||(i+1)*24>count) break;  //不足24字节退出
+		temp.d_ino = dir[i].inode;
+		for(j=0;j<14;j++){
+			temp.d_name[j] = dir[i].name[j];
+		}
+		temp.d_off=0;   
+		temp.d_reclen=24;    //只占位不可以   	
+		for(k=0;k<24;k++){
+			//((char *)dirp)[yyh] = ((char*)&temp)[k];
+			put_fs_byte(((char*)&temp)[k],((char*)dirp+yyh));	//这里必须使用 put_fs_byte()
+			yyh++;
+		}
+	}
+	return yyh;
 }
 int sys_yyh(void){
 	return 0;
