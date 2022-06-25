@@ -154,7 +154,7 @@ long sys_getcwd(char*buf,size_t size)
 	unsigned short the_last;
 	struct m_inode *the_new_inode;
 	char* temp[256]; //temp原因
-	char *ans;
+	char ans[100]={0};
 	struct m_inode *inode = current->pwd;   //当前目录的索引节点
 	struct buffer_head *dir_head = bread(current->root->i_dev,inode->i_zone[0]);  //dev设备号   block块号
 	struct dir_entry *dir = (struct dir_entry *)dir_head->b_data;//第一个目录项
