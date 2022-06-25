@@ -153,7 +153,7 @@ long sys_getcwd(char*buf,size_t size)
 	int i,j,yyh,k;
 	unsigned short the_last;
 	struct m_inode *the_new_inode;
-	char* temp[1024]; //temp原因
+	char* temp[256]; //temp原因
 	char *ans;
 	struct m_inode *inode = current->pwd;   //当前目录的索引节点
 	struct buffer_head *dir_head = bread(current->root->i_dev,inode->i_zone[0]);  //dev设备号   block块号
