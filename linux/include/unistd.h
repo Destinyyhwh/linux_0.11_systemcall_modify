@@ -146,6 +146,7 @@
 #define __NR_uselib	86
 #define __NR_execve2 87
 #define __NR_getdents 88
+#define __NR_yyh 89
 #define __NR_sleep 90
 #define __NR_getcwd 91
 
@@ -219,6 +220,7 @@ int creat(const char * filename, mode_t mode);
 int dup(int fildes);
 int execve(const char * filename, char ** argv, char ** envp);
 int execve2(const char*path, char*argv[], char*envp[]);
+int yyh(void);
 int getdents(unsigned int fd,struct linux_dirent *dirp,unsigned int count);
 unsigned int sleep(unsigned int seconds);
 long getcwd(char*buf,size_t size);
