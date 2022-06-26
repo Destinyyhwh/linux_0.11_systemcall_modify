@@ -161,6 +161,10 @@ long sys_getcwd(char*buf,size_t size)
 	struct buffer_head *dir_head = bread(current->root->i_dev,inode->i_zone[0]);  //dev设备号   block块号
 	struct dir_entry *dir = (struct dir_entry *)dir_head->b_data;//第一个目录项
 	i = 0;
+	if(dir==NULL) return -1;
+	if(buf==NULL){
+		buf = (char*)malloc(sizeof(char)*size);
+	}
 	while(1){
 		the_last = dir->inode;
 		the_new_inode = iget(current->root->i_dev,(dir+1)->inode);
