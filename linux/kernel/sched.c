@@ -143,7 +143,9 @@ void schedule(void)
 
 unsigned int sys_sleep(unsigned int seconds)
 {
-	sys_signal(14,SIG_IGN,NULL); 	//忽略SIGALRM信号
+	if(sys_signal(14,SIG_IGN,NULL)==-1){ 	//忽略SIGALRM信号
+		return -1;
+	}
 	sys_alarm(seconds); 			//seconds秒后进程收到SIGALRM信号
 	sys_pause();					//睡眠
 	return 0;
